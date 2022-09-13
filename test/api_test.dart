@@ -1,20 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:location/location.dart';
+import 'package:wit/models/weather_model.dart';
 import 'package:wit/repositories/weather_repository.dart';
 
 void main() {
   test(
-    "API test",
+    "Should return the WeatherModel if success, null or int if failure",
     () async {
-      final location = await Location().getLocation();
-      final Map<String, dynamic> queryParams = {
-        'lat': location.latitude,
-        'lon': location.longitude
-      };
+      final Map<String, dynamic> queryParams = {'q': 'London'};
       final response =
           await WeatherRepository(dio: Dio()).getWeather(queryParams);
-      expect([].contains(response.runtimeType), false);
+      expect([int, WeatherModel].contains(response.runtimeType), true);
     },
   );
 }
